@@ -7,8 +7,12 @@ const logger = require('morgan');
 // route
 const index = require('./routes/index');
 const users = require('./routes/users');
+const movies = require("./routes/movies");
 
 const app = express();
+
+// db connection
+const db = require('./helper/db.js')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -17,13 +21,14 @@ app.set('view engine', 'jade');
 // express generator global settings
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // route use
 app.use('/', index);
 app.use('/users', users);
+app.use("/api/movies", movies);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -38,7 +43,7 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({ error: { message: err.message, code: err.code } });
 });
 
 module.exports = app;
