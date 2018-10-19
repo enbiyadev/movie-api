@@ -4,10 +4,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-// route
+// routes
 const index = require('./routes/index');
 const users = require('./routes/users');
 const movies = require("./routes/movies");
+const directors = require("./routes/directors");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use("/api/movies", movies);
+app.use("/api/directors", directors);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
