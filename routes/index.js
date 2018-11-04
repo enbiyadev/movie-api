@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+//
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Models
 const Users = require("../models/Users");
@@ -27,6 +29,51 @@ router.post('/register', (req, res, next) => {
     });
   });
 
+});
+
+router.post('/authenticate', (req, res, next) => {
+  const { username, password } = req.body;
+
+  Users.findOne({
+    username
+  }, (err, user) => {
+    if (err)
+      throw err;
+    
+    // User aranıyor
+    if (!user) {
+      res.json({
+        status: false,
+        message: "Kimlik doğrulama başarısız oldu, kullanıcı bulunamadı."
+      });
+    // Şifre eşleştirme  
+    } else {
+      bcrypt.compare(password, user.password).then((result) => {
+        if (!result) {
+          res.json({
+            status: false,
+            message: "Kimlik doğrulama başarısız oldu, yanlış şifre."
+          });
+        } else {
+          // taşınması istediğiniz nesneler
+          const payload = {
+            username
+          };
+
+          // oturum yönetimi
+          const token = jwt.sign(payload, req.app.get('api_secret_key'), {
+            // süre methodu
+            expiresIn: 720 // 12 saat
+          });
+
+          res.json({
+            status: true,
+            token
+          });
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;
