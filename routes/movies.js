@@ -4,7 +4,7 @@ const router = express.Router();
 // Models
 const Movie = require("../models/Movie");
 
-// Top 10 List
+// Hangi film hangi yönetmene ait
 router.get("/", (req, res) => {
   const promise = Movie.aggregate([
     {
@@ -28,6 +28,7 @@ router.get("/", (req, res) => {
 
 });
 
+// Top 10 List
 router.get("/top10", (req, res) => {
   const promise = Movie.find({ }).limit(10).sort({ imdb_score: -1 });
 
@@ -38,6 +39,7 @@ router.get("/top10", (req, res) => {
   });
 });
 
+// 2
 router.get("/:movie_id", (req, res, next) => {
   const promise = Movie.findById(req.params.movie_id);
   
@@ -51,6 +53,8 @@ router.get("/:movie_id", (req, res, next) => {
   });
 });
 
+
+// 3
 router.put("/:movie_id", (req, res, next) => {
   const promise = Movie.findByIdAndUpdate(
     req.params.movie_id, 
@@ -70,6 +74,8 @@ router.put("/:movie_id", (req, res, next) => {
   });
 });
 
+
+// 4
 router.delete("/:movie_id", (req, res, next) => {
   const promise = Movie.findByIdAndRemove(req.params.movie_id);
 
@@ -83,6 +89,8 @@ router.delete("/:movie_id", (req, res, next) => {
   });
 });
 
+
+// 1
 router.post("/", (req, res, next) => {
   // const { title, imdb_score, category, country, year } = req.body;
 
