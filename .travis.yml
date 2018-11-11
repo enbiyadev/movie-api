@@ -7,4 +7,4 @@ before_script:
   - export NODE_ENV=production
   - npm install  
 script:
-  - npm test
+  - npm run test
