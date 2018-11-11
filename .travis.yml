@@ -1,8 +1,10 @@
 language: node_js
 node_js:
-  - 8
+  - 10
 before_install:
-  - npm install
+  - npm install -g node-gyp
+before_script:  
   - export NODE_ENV=production
+  - npm install  
 script:
   - npm test
