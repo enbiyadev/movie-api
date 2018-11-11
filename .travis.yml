@@ -5,4 +5,4 @@ before_install:
   - npm install -g npm@2
   - export NODE_ENV=production
 script:
-- ember test --server
+  - npm test
